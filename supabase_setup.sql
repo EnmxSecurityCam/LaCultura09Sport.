@@ -24,11 +24,12 @@ to anon, authenticated
 using (active = true);
 
 drop policy if exists "Authenticated users manage products" on public.products;
-create policy "Authenticated users manage products"
+drop policy if exists "Only LC09 admin manages products" on public.products;
+create policy "Only LC09 admin manages products"
 on public.products for all
 to authenticated
-using (auth.uid() is not null)
-with check (auth.uid() is not null);
+using (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid)
+with check (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('product-photos', 'product-photos', true, 5242880, array['image/jpeg','image/png','image/webp'])
@@ -41,20 +42,23 @@ to anon, authenticated
 using (bucket_id = 'product-photos');
 
 drop policy if exists "Authenticated users upload product photos" on storage.objects;
-create policy "Authenticated users upload product photos"
+drop policy if exists "Only LC09 admin uploads product photos" on storage.objects;
+create policy "Only LC09 admin uploads product photos"
 on storage.objects for insert
 to authenticated
-with check (bucket_id = 'product-photos' and auth.uid() is not null);
+with check (bucket_id = 'product-photos' and auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
 
 drop policy if exists "Authenticated users update product photos" on storage.objects;
-create policy "Authenticated users update product photos"
+drop policy if exists "Only LC09 admin updates product photos" on storage.objects;
+create policy "Only LC09 admin updates product photos"
 on storage.objects for update
 to authenticated
-using (bucket_id = 'product-photos' and auth.uid() is not null)
-with check (bucket_id = 'product-photos' and auth.uid() is not null);
+using (bucket_id = 'product-photos' and auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid)
+with check (bucket_id = 'product-photos' and auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
 
 drop policy if exists "Authenticated users delete product photos" on storage.objects;
-create policy "Authenticated users delete product photos"
+drop policy if exists "Only LC09 admin deletes product photos" on storage.objects;
+create policy "Only LC09 admin deletes product photos"
 on storage.objects for delete
 to authenticated
-using (bucket_id = 'product-photos' and auth.uid() is not null);
+using (bucket_id = 'product-photos' and auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
