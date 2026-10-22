@@ -65,3 +65,24 @@ create policy "Only LC09 admin deletes product photos"
 on storage.objects for delete
 to authenticated
 using (bucket_id = 'product-photos' and auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
+
+
+-- Pedidos creados desde la tienda pública. No procesa pagos en línea.
+create table if not exists public.orders (
+  id uuid primary key default gen_random_uuid(),
+  customer_name text not null check (char_length(customer_name) between 1 and 120),
+  phone text not null check (char_length(phone) between 1 and 40),
+  delivery text not null default 'Coordinar entrega',
+  items jsonb not null default '[]'::jsonb,
+  total_dop numeric(12,2) not null check (total_dop >= 0),
+  status text not null default 'Pendiente' check (status in ('Pendiente','En proceso','Completada','Cancelada')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+alter table public.orders enable row level security;
+drop policy if exists "Public can place orders" on public.orders;
+create policy "Public can place orders" on public.orders for insert to anon, authenticated with check (true);
+drop policy if exists "Only LC09 admin reads orders" on public.orders;
+create policy "Only LC09 admin reads orders" on public.orders for select to authenticated using (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
+drop policy if exists "Only LC09 admin updates orders" on public.orders;
+create policy "Only LC09 admin updates orders" on public.orders for update to authenticated using (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid) with check (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
