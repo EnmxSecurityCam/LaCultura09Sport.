@@ -90,7 +90,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 <script>
 const SUPABASE_URL="https://xibmnpbylzrejpsuqchf.supabase.co";
 const SUPABASE_PUBLIC_KEY="sb_publishable_E8AZ0xqRgnim_8mnYEx_Dg_Mm1tcpTc";
-const client=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const client=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:"lc09-customer-auth"}});
 const $=id=>document.getElementById(id);
 let items=[],category="Todos",cart={},orders=[],authUser=null,authSession=null,authMode="signup",cartSaveTimer=null,customerRequests=[],cloudCartLoadedFor=null;
 const money=n=>"RD$"+Number(n||0).toLocaleString("es-DO");
