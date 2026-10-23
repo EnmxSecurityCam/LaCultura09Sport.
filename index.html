@@ -112,27 +112,35 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 @media(prefers-reduced-motion:reduce){#accountOverlay>section.drawer{transition:none}}
 
 
-/* LA CULTURA 09 SPORT — nube underground para carrito y cuenta */
-:root{--red:#f20b2f;--ink:#070707}
-#overlay,#accountOverlay{background:rgba(0,0,0,.78);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);padding:clamp(10px,3vw,28px)}
-#overlay>.drawer,#accountOverlay>.drawer,#accountOverlay>section.drawer{
+
+
+/* Fondos con flow underground: solo decoración, conserva el diseño y funcionamiento actual */
+:root{--lc09-red:#f20b2f}
+body{background:#fff}
+.masthead{position:relative;isolation:isolate;overflow:hidden;background:#fff!important}
+.masthead:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 8% 20%,#ff174018 0 2%,transparent 27%),radial-gradient(ellipse at 92% 80%,#1111110b 0 4%,transparent 32%),repeating-linear-gradient(135deg,transparent 0 42px,#11111105 43px 44px,transparent 45px 83px)}
+.masthead:after{content:"LC09 • LA CULTURA • SPORT";position:absolute;right:3%;bottom:4px;color:#ed12331c;font-size:clamp(16px,3vw,32px);font-weight:1000;letter-spacing:5px;transform:rotate(-5deg);pointer-events:none;z-index:-1}
+.hero{position:relative;isolation:isolate;overflow:hidden;background:#fff!important;border-top:1px solid #f0f0f0;border-bottom:1px solid #eee}
+.hero:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 0% 100%,#ed123316,transparent 42%),radial-gradient(ellipse at 95% 0%,#11111108,transparent 38%),repeating-linear-gradient(135deg,transparent 0 34px,#11111106 35px 36px,transparent 37px 70px)}
+.hero:after{content:"09";position:absolute;right:5%;top:50%;transform:translateY(-50%) rotate(-8deg);font-size:clamp(130px,25vw,330px);font-weight:1000;letter-spacing:-.12em;color:#f20b2f08;line-height:.8;z-index:-1;pointer-events:none}
+.hero-mark{position:relative;text-shadow:3px 3px 0 #f20b2f12,-2px -2px 0 #11111108}
+.wrap{position:relative;isolation:isolate}
+.wrap:before{content:"";position:absolute;top:0;left:4%;right:4%;height:1px;background:linear-gradient(90deg,transparent,#f20b2f55,#11111120,transparent);pointer-events:none}
+.heading h2{text-transform:uppercase;letter-spacing:-.7px}
+.heading h2:before{content:"✳ ";color:var(--lc09-red);font-size:.8em}
+#overlay,#accountOverlay{background:rgba(0,0,0,.78);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+#overlay>.drawer,#accountOverlay>section.drawer{
  color:#f5f5f5;background:linear-gradient(145deg,#111 0%,#080808 60%,#160307 100%);
- border:1px solid #ff2344;border-radius:18px;box-shadow:0 0 0 1px #ff234422,0 0 28px #f20b2f35,0 24px 80px #000b;
- position:relative;isolation:isolate;overflow:auto
+ border:1px solid #ff2344;border-radius:18px;box-shadow:0 0 0 1px #ff234422,0 0 28px #f20b2f35,0 24px 80px #000b;position:relative
 }
-#overlay>.drawer:before,#accountOverlay>.drawer:before,#accountOverlay>section.drawer:before{
- content:"LA CULTURA 09 / UNDERGROUND";display:block;font-size:9px;letter-spacing:3px;font-weight:900;color:#ff2848;
- border-bottom:1px solid #ffffff18;padding:0 0 12px;margin:0 0 13px
-}
+#overlay>.drawer:before,#accountOverlay>section.drawer:before{content:"LA CULTURA 09 / UNDERGROUND";display:block;font-size:9px;letter-spacing:3px;font-weight:900;color:#ff2848;border-bottom:1px solid #ffffff18;padding:0 0 12px;margin:0 0 13px}
 #overlay .drawhead,#accountOverlay .drawhead{background:#0a0a0a;border-bottom:1px solid #ffffff20;padding:8px 0 14px}
 #overlay .drawhead h2,#accountOverlay .drawhead h2{font-size:clamp(20px,4vw,27px);text-transform:uppercase;letter-spacing:1px;font-weight:1000;color:#fff}
 #overlay .drawhead h2:before,#accountOverlay .drawhead h2:before{content:"✦ ";color:#ff1740}
 #overlay .drawhead .btn,#accountOverlay .drawhead .btn{background:#161616;border:1px solid #ff2344;color:white}
-#overlay .cartrow{border-bottom:1px solid #ffffff20}
+#overlay .cartrow{border-bottom:1px solid #ffffff20;color:#c7c7c7}
 #overlay .cartrow img{background:#171717;border:1px solid #ffffff20;border-radius:7px}
-#overlay .cartrow h4{color:#fff;font-size:13px}
-#overlay .cartrow small,#overlay .cartrow{color:#c7c7c7}
-#overlay .cartrow b,#overlay .total{color:#fff}
+#overlay .cartrow h4,#overlay .cartrow b,#overlay .total{color:#fff}
 #overlay .qty button{background:#151515;border:1px solid #ff2344;color:#fff;border-radius:5px}
 #overlay .total{border-top:1px solid #ffffff20;padding-top:16px}
 #overlay .total span:last-child{color:#ff2344}
@@ -142,25 +150,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 #overlay .field input::placeholder,#accountOverlay .field input::placeholder{color:#888}
 #overlay .payment-note,#accountOverlay .payment-note,#accountOverlay p{color:#bcbcbc}
 #overlay .hint{background:#151515;color:#c7c7c7;border:1px solid #333}
-#accountOverlay{align-items:center;justify-content:center}
+#accountOverlay{align-items:center;justify-content:center;padding:12px}
 #accountOverlay>section.drawer{width:min(520px,100%);max-width:520px!important;height:auto;max-height:calc(100dvh - 24px);padding:clamp(20px,5vw,32px);border-radius:18px}
-#accountOverlay>section.drawer:after{content:"STREET CULTURE • 09";display:block;text-align:center;color:#ff2344;font-size:9px;letter-spacing:3px;font-weight:900;margin-top:20px}
 #accountOverlay #authMessage{padding:11px 12px;background:#ffffff08;border-left:3px solid #ff2344;border-radius:0 6px 6px 0;line-height:1.6}
-#accountOverlay #authForm .field{margin:14px 0}
 #accountOverlay #authForm input{min-height:47px;font-size:16px}
 #accountOverlay #authToggle,#accountOverlay #forgotPassword{background:#151515;color:#fff;border:1px solid #454545;border-radius:6px}
-#accountOverlay #authToggle:hover,#accountOverlay #forgotPassword:hover{border-color:#ff2344;color:#ff5269}
-.floating-cart{background:radial-gradient(circle at 30% 20%,#ff6479 0,#f20b2f 38%,#780015 100%);border:1px solid #ff9aa9;box-shadow:0 0 0 5px #f20b2f18,0 0 32px #f20b2f77, inset 0 1px 5px #ffffff80}
+.floating-cart{background:radial-gradient(circle at 30% 20%,#ff6479 0,#f20b2f 38%,#780015 100%);border:1px solid #ff9aa9;box-shadow:0 0 0 5px #f20b2f18,0 0 32px #f20b2f77,inset 0 1px 5px #ffffff80}
 .floating-cart:after{content:"";position:absolute;inset:-6px;border:1px solid #ff234455;border-radius:50%;pointer-events:none}
 .floating-cart .floating-count{background:#080808;border-color:#ff2344;color:#fff}
-@media(max-width:800px){
- #overlay{padding:10px;align-items:flex-end}
- #overlay>.drawer{width:100%;max-width:none;height:min(84dvh,820px);max-height:calc(100dvh - 88px);border-radius:16px;padding:17px}
- #overlay .drawhead{top:-17px}
- #accountOverlay{padding:10px}
- #accountOverlay>section.drawer{width:100%;max-height:calc(100dvh - 20px);padding:22px 18px}
- .floating-cart{right:17px;bottom:calc(17px + env(safe-area-inset-bottom));width:62px;height:62px}
-}
+@media(max-width:800px){#overlay{padding:10px;align-items:flex-end}#overlay>.drawer{width:100%;max-width:none;height:min(84dvh,820px);max-height:calc(100dvh - 88px);border-radius:16px;padding:17px}#accountOverlay>section.drawer{width:100%;max-height:calc(100dvh - 20px);padding:22px 18px}.floating-cart{right:17px;bottom:calc(17px + env(safe-area-inset-bottom));width:62px;height:62px}}
 
 </style>
 </head>
