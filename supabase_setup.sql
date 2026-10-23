@@ -208,3 +208,69 @@ begin
 end; $$;
 revoke all on function public.lc09_submit_order_request(uuid,text,text,text,text,text) from public;
 grant execute on function public.lc09_submit_order_request(uuid,text,text,text,text,text) to anon, authenticated;
+
+
+-- ===== CUENTAS DE CLIENTES, CARRITOS Y PEDIDOS PRIVADOS =====
+-- Supabase Auth administra las contraseñas; nunca guardar contraseñas en tablas propias.
+alter table public.orders add column if not exists user_id uuid references auth.users(id) on delete set null;
+alter table public.orders add column if not exists email text not null default '';
+create index if not exists orders_user_id_created_at_idx on public.orders(user_id, created_at desc);
+
+drop policy if exists "Public can place orders" on public.orders;
+drop policy if exists "Only LC09 admin reads orders" on public.orders;
+drop policy if exists "Only LC09 admin updates orders" on public.orders;
+drop policy if exists "LC09 customers read own orders" on public.orders;
+create policy "LC09 customers read own orders" on public.orders for select to authenticated using (user_id = auth.uid());
+create policy "Only LC09 admin reads orders" on public.orders for select to authenticated using (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
+create policy "LC09 authenticated customers create own orders" on public.orders for insert to authenticated with check (user_id = auth.uid());
+create policy "Only LC09 admin updates orders" on public.orders for update to authenticated using (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid) with check (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
+
+create table if not exists public.customer_carts (
+ user_id uuid primary key references auth.users(id) on delete cascade,
+ cart jsonb not null default '{}'::jsonb check (jsonb_typeof(cart) = 'object'),
+ updated_at timestamptz not null default now()
+);
+alter table public.customer_carts enable row level security;
+drop policy if exists "Customers manage own cart" on public.customer_carts;
+create policy "Customers manage own cart" on public.customer_carts for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+alter table public.order_cancellation_requests add column if not exists user_id uuid references auth.users(id) on delete set null;
+update public.order_cancellation_requests r set user_id=o.user_id from public.orders o where r.order_id=o.id and r.user_id is null and o.user_id is not null;
+drop policy if exists "LC09 admin reads cancellation requests" on public.order_cancellation_requests;
+drop policy if exists "LC09 admin updates cancellation requests" on public.order_cancellation_requests;
+drop policy if exists "LC09 customers read own requests" on public.order_cancellation_requests;
+create policy "LC09 customers read own requests" on public.order_cancellation_requests for select to authenticated using (user_id = auth.uid());
+create policy "LC09 admin reads cancellation requests" on public.order_cancellation_requests for select to authenticated using (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
+create policy "LC09 admin updates cancellation requests" on public.order_cancellation_requests for update to authenticated using (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid) with check (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
+
+drop function if exists public.lc09_customer_order_lookup(uuid,text);
+drop function if exists public.lc09_submit_order_request(uuid,text,text,text,text,text);
+create or replace function public.lc09_submit_order_request(
+ p_order_id uuid, p_request_type text, p_reason text, p_details text default '', p_refund_method text default 'Mismo método de pago'
+) returns jsonb language plpgsql security definer set search_path = public, pg_temp as $$
+declare o public.orders%rowtype; existing public.order_cancellation_requests%rowtype;
+begin
+ if auth.uid() is null then return jsonb_build_object('ok',false,'message','Inicia sesión para solicitar una cancelación o devolución.'); end if;
+ if p_request_type not in ('Cancelación','Devolución') then return jsonb_build_object('ok',false,'message','Tipo de solicitud inválido.'); end if;
+ if char_length(trim(coalesce(p_reason,''))) < 3 then return jsonb_build_object('ok',false,'message','Selecciona el motivo de la solicitud.'); end if;
+ if char_length(coalesce(p_details,'')) > 1000 then return jsonb_build_object('ok',false,'message','Los detalles son demasiado largos.'); end if;
+ select * into o from public.orders where id=p_order_id and user_id=auth.uid();
+ if not found then return jsonb_build_object('ok',false,'message','No encontramos ese pedido en tu cuenta.'); end if;
+ if p_request_type='Cancelación' and o.status in ('Completada','Cancelada') then return jsonb_build_object('ok',false,'message','Este pedido ya está completado o cancelado. Si pagaste y necesitas reclamar, solicita una devolución.'); end if;
+ select * into existing from public.order_cancellation_requests where order_id=o.id and status in ('Pendiente de revisión','En revisión') order by created_at desc limit 1;
+ if found then return jsonb_build_object('ok',false,'message','Ya existe una solicitud en revisión para este pedido.'); end if;
+ insert into public.order_cancellation_requests(order_id,user_id,customer_phone,request_type,reason,details,refund_method)
+ values(o.id,auth.uid(),o.phone,p_request_type,trim(p_reason),trim(coalesce(p_details,'')),coalesce(nullif(trim(p_refund_method),''),'Mismo método de pago'));
+ return jsonb_build_object('ok',true,'message','Solicitud enviada. La tienda revisará tu caso; no se ha ejecutado ningún reembolso automático.');
+end; $$;
+revoke all on function public.lc09_submit_order_request(uuid,text,text,text,text) from public;
+grant execute on function public.lc09_submit_order_request(uuid,text,text,text,text) to authenticated;
+
+drop policy if exists "Public can upload transfer proofs" on storage.objects;
+drop policy if exists "LC09 customers upload own transfer proofs" on storage.objects;
+create policy "LC09 customers upload own transfer proofs" on storage.objects for insert to authenticated with check (
+ bucket_id='transfer-proofs' and split_part(name,'/',1)=auth.uid()::text
+ and lower(storage.extension(name)) in ('jpg','jpeg','png','webp')
+ and (metadata->>'mimetype') in ('image/jpeg','image/png','image/webp')
+ and coalesce((metadata->>'size')::bigint,0)<=5242880
+);
