@@ -259,6 +259,60 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   #overlay>.drawer:after,#accountOverlay>section.drawer:after{border-width:2px}
 }
 
+
+/* Acabado underground del diseño de referencia: paneles de carrito y cuenta */
+#overlay>.drawer,#accountOverlay>section.drawer{
+  background:
+    radial-gradient(ellipse at 15% 0%,#252020 0,transparent 34%),
+    radial-gradient(ellipse at 100% 100%,#25070c 0,transparent 38%),
+    repeating-linear-gradient(132deg,#080808 0,#080808 8px,#0c0b0b 9px,#080808 11px)!important;
+  color:#f4f1ef!important;
+  border-radius:2px!important;
+  outline:1px solid #f4f1ef55;
+  box-shadow:0 0 0 2px #e5092b,0 0 22px #ed002e80,0 24px 80px #000!important;
+}
+#overlay>.drawer:after,#accountOverlay>section.drawer:after{
+  border:2px solid #f4f1ef!important;
+  clip-path:polygon(0 4%,3% 1%,9% 2%,13% 0,20% 1%,26% 0,35% 2%,43% 0,51% 1%,60% 0,68% 2%,77% 0,86% 1%,94% 0,100% 5%,98% 13%,100% 22%,98% 31%,100% 40%,98% 48%,100% 57%,98% 66%,100% 75%,98% 84%,100% 95%,95% 100%,86% 98%,78% 100%,69% 98%,60% 100%,51% 98%,42% 100%,33% 98%,24% 100%,15% 98%,6% 100%,0 94%,2% 84%,0 75%,1% 65%,0 55%,2% 45%,0 35%,1% 25%,0 15%);
+  filter:drop-shadow(0 0 3px #fff8) drop-shadow(0 0 7px #f0002e)!important;
+}
+#overlay .drawhead,#accountOverlay .drawhead{
+  background:linear-gradient(110deg,#090909,#16090b 70%,#090909)!important;
+  border-bottom:1px solid #ed1234!important;
+}
+#overlay .drawhead h2,#accountOverlay .drawhead h2,
+#overlay .drawer h2,#accountOverlay .drawer h2{
+  color:#f7f4f2!important;
+  text-shadow:2px 2px 0 #b00022,0 0 12px #e5092b65;
+  letter-spacing:.04em;
+}
+#overlay .cartrow,#overlay .cart-summary,#overlay .order-result,
+#overlay .hint,#accountOverlay input,#accountOverlay select{
+  background:#080808!important;
+  color:#f4f1ef!important;
+  border-color:#ffffff35!important;
+}
+#overlay .cartrow{border-bottom:1px solid #ffffff35!important}
+#overlay .cartrow b,#overlay .cart-summary strong{color:#ff173c!important}
+#overlay .qty button,#overlay .drawhead .btn,#accountOverlay .drawhead .btn{
+  background:#10090a!important;color:#fff!important;border:1px solid #f01438!important;
+}
+#overlay button[type=submit],#overlay .primary,#accountOverlay button[type=submit],
+#accountOverlay .primary{
+  background:linear-gradient(100deg,#d90027,#ff0739)!important;
+  color:white!important;border:1px solid #ff2449!important;
+  box-shadow:0 0 14px #f0002e45!important;
+}
+#overlay input,#overlay textarea,#overlay select,#accountOverlay input,
+#accountOverlay textarea,#accountOverlay select{
+  background:#050505!important;color:#fff!important;
+  border:1px solid #ffffff45!important;border-radius:8px!important;
+}
+#overlay input:focus,#overlay textarea:focus,#overlay select:focus,
+#accountOverlay input:focus,#accountOverlay textarea:focus,#accountOverlay select:focus{
+  border-color:#ff173c!important;outline:1px solid #ff173c55;
+}
+
 </style>
 </head>
 <body>
