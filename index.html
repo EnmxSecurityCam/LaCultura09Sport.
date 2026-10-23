@@ -196,6 +196,29 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   #overlay>.drawer,#accountOverlay>section.drawer{border-color:#c6a35c}
 }
 
+
+/* Ajuste final: bordes rojos y carrito sin zonas blancas */
+#overlay>.drawer,#accountOverlay>section.drawer{
+  border:1px solid #e9273d;
+  box-shadow:0 24px 80px #0009,inset 0 0 0 1px #e9273d30;
+}
+#overlay .drawhead,#overlay .cart-summary{
+  background:#100c0c!important;
+  color:#f8e9c6;
+}
+#overlay .cart-summary{border-top:1px solid #e9273d70}
+#overlay .drawhead{border-bottom:1px solid #e9273d70}
+#overlay .cartrow img{background:#171010}
+#overlay .order-tools input,#overlay .order-tools select,#overlay .order-tools textarea{
+  background:#100c0c!important;color:#fff4df;
+}
+#overlay .order-result,#overlay .hint{background:#171010!important}
+#overlay .qty button{border-color:#e9273d}
+#overlay .drawhead .btn,#accountOverlay .drawhead .btn{border-color:#e9273d}
+@media(max-width:800px){
+  #overlay>.drawer,#accountOverlay>section.drawer{border-color:#e9273d}
+}
+
 </style>
 </head>
 <body>
