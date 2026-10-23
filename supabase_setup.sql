@@ -136,3 +136,9 @@ create policy "Only LC09 admin deletes transfer proofs"
 on storage.objects for delete
 to authenticated
 using (bucket_id = 'transfer-proofs' and auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
+
+
+-- Estado de verificación del pago. Aprobar transferencia requiere comprobar el depósito en la cuenta.
+alter table public.orders add column if not exists payment_status text not null default 'Pendiente de verificación';
+alter table public.orders drop constraint if exists orders_payment_status_check;
+alter table public.orders add constraint orders_payment_status_check check (payment_status in ('Pendiente de verificación','Aprobado','Rechazado'));
