@@ -115,6 +115,87 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 
 
 
+
+/* Estilo oriental chino — SOLO carrito y acceso/registro */
+#overlay>.drawer,#accountOverlay>section.drawer{
+  color:#f8f0df;
+  background:
+    radial-gradient(ellipse at 100% 0%,#8d1722 0,transparent 34%),
+    linear-gradient(145deg,#171010 0%,#090909 58%,#1d1010 100%);
+  border:1px solid #b99753;
+  box-shadow:0 24px 80px #0008, inset 0 0 0 5px #c9a45b12;
+  position:relative;
+  isolation:isolate;
+}
+#overlay>.drawer:before,#accountOverlay>section.drawer:before{
+  content:"囍  ✦  福  ✦  囍";
+  display:block;
+  color:#d8b66a;
+  font-family:serif;
+  font-size:12px;
+  letter-spacing:5px;
+  text-align:center;
+  padding:0 0 12px;
+  border-bottom:1px solid #b9975359;
+  margin-bottom:12px;
+}
+#overlay .drawhead,#accountOverlay .drawhead{
+  border-bottom:1px solid #b9975359;
+  color:#f8e9c6;
+}
+#overlay .drawhead h2,#accountOverlay .drawhead h2{
+  color:#f8e9c6;
+  letter-spacing:.2px;
+}
+#overlay .drawhead .btn,#accountOverlay .drawhead .btn{
+  color:#f8e9c6;
+  background:#321216;
+  border:1px solid #b99753;
+}
+#overlay .cartrow{border-bottom:1px solid #b997533d}
+#overlay .cartrow h4,#overlay .cartrow b{color:#fff2d4}
+#overlay .cartrow small,#overlay .cartrow{color:#d7c9b1}
+#overlay .cartrow img{background:#241718;border:1px solid #8c6a35;border-radius:5px}
+#overlay .qty button{
+  color:#ffe8b0;background:#281416;border:1px solid #a98442;border-radius:5px;
+}
+#overlay .qty button:hover{background:#9d1e2b;color:white}
+#overlay .total{color:#ffe8b0;border-top:1px solid #b9975359;padding-top:16px}
+#overlay .order-tools{
+  background:#1a1112;border:1px solid #6f3431;color:#f4e5c8;border-radius:10px;
+}
+#overlay .order-tools h3,#overlay .order-tools strong{color:#f4d58c}
+#overlay .order-tools p,#overlay .order-tools small{color:#d6c7b2}
+#overlay .order-result,#overlay .hint{
+  background:#211516;border-color:#6f3431;color:#eee0c9;
+}
+#overlay .field label,#accountOverlay .field label{color:#e8ca84}
+#overlay .field input,#overlay .field select,#overlay .order-tools input,#overlay .order-tools select,#overlay .order-tools textarea,
+#accountOverlay .field input{
+  background:#100c0c;color:#fff4df;border:1px solid #86643a;border-radius:7px;
+}
+#overlay input::placeholder,#accountOverlay input::placeholder{color:#a99a86}
+#overlay .btn,#accountOverlay .btn{
+  background:#281416;color:#f5e5c6;border:1px solid #a98442;
+}
+#overlay .btn.primary,#accountOverlay .btn.primary,#accountOverlay #authSubmit,#overlay .checkout-submit{
+  background:linear-gradient(135deg,#bd2833,#7c111c);
+  border:1px solid #d6b264;color:#fff8e9;
+  box-shadow:0 4px 14px #8d172244;
+}
+#accountOverlay #authMessage{
+  background:#211516;border:1px solid #6f3431;color:#eadbc3;
+}
+#accountOverlay #authToggle,#accountOverlay #forgotPassword{
+  background:transparent;color:#e8c779;border:1px solid #8d6a39;
+}
+#overlay .cart-summary{background:#100c0c;border-top:1px solid #b9975359}
+#overlay .payment-note{color:#d6c7b2}
+#overlay .drawhead .btn:after,#accountOverlay .drawhead .btn:after{color:#f8e9c6}
+@media(max-width:800px){
+  #overlay>.drawer,#accountOverlay>section.drawer{border-color:#c6a35c}
+}
+
 </style>
 </head>
 <body>
