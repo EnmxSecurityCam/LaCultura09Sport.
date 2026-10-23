@@ -73,12 +73,31 @@ create table if not exists public.orders (
   customer_name text not null check (char_length(customer_name) between 1 and 120),
   phone text not null check (char_length(phone) between 1 and 40),
   delivery text not null default 'Coordinar entrega',
+  province text not null default '',
+  municipality text not null default '',
+  sector text not null default '',
+  address text not null default '',
+  address_reference text not null default '',
+  payment_method text not null default 'Coordinar con la tienda',
   items jsonb not null default '[]'::jsonb,
+  subtotal_dop numeric(12,2) not null default 0 check (subtotal_dop >= 0),
+  shipping_dop numeric(12,2) null check (shipping_dop is null or shipping_dop >= 0),
   total_dop numeric(12,2) not null check (total_dop >= 0),
   status text not null default 'Pendiente' check (status in ('Pendiente','En proceso','Completada','Cancelada')),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+-- Migración segura para pedidos existentes: ejecutar también si la tabla orders ya existía.
+alter table public.orders add column if not exists province text not null default '';
+alter table public.orders add column if not exists municipality text not null default '';
+alter table public.orders add column if not exists sector text not null default '';
+alter table public.orders add column if not exists address text not null default '';
+alter table public.orders add column if not exists address_reference text not null default '';
+alter table public.orders add column if not exists payment_method text not null default 'Coordinar con la tienda';
+alter table public.orders add column if not exists subtotal_dop numeric(12,2) not null default 0;
+alter table public.orders add column if not exists shipping_dop numeric(12,2) null;
+update public.orders set subtotal_dop = total_dop where subtotal_dop = 0 and total_dop > 0;
+
 alter table public.orders enable row level security;
 drop policy if exists "Public can place orders" on public.orders;
 create policy "Public can place orders" on public.orders for insert to anon, authenticated with check (true);
