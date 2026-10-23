@@ -65,7 +65,7 @@ $('productList').onclick=async e=>{const eb=e.target.closest('[data-edit]'),db=e
 const shoeCategories=['Tenis'];
 function sizeChoices(){const cat=$('customCategory').value.trim()||$('category').value;if(shoeCategories.includes(cat))return ['36','37','38','39','40','41','42','43','44','45','46'];if(['Camisas','Camisetas','Hoodies','Pantalones','Shorts','Conjuntos'].includes(cat))return ['XS','S','M','L','XL','XXL','XXXL'];if(['Medias'].includes(cat))return ['S','M','L','XL','Única'];return ['Única','S','M','L','XL'];}
 function renderSizeOptions(selectedValue=''){const selected=String(selectedValue||'').split(',').map(v=>v.trim()).filter(Boolean);const choices=sizeChoices();$('sizeOptions').innerHTML=choices.map((v,i)=>'<label class="size-option"><input type="checkbox" value="'+esc(v)+'" '+(selected.includes(v)?'checked':'')+'> '+esc(v)+'</label>').join('');$('size').value=selected.filter(v=>choices.includes(v)).join(', ');$('sizeOptions').querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>{$('size').value=Array.from($('sizeOptions').querySelectorAll('input:checked')).map(x=>x.value).join(', ')}));}
-$('category').addEventListener('change',()=>renderSizeOptions());
+$('category').addEventListener('change',()=>{$('customCategory').value='';renderSizeOptions('')});
 $('customCategory').addEventListener('input',()=>renderSizeOptions());
 $('cancelEdit').onclick=()=>resetForm();
 function resetForm(){$('productForm').reset();$('productId').value='';$('stock').value='0';$('active').checked=true;$('photoPreview').innerHTML='';$('formTitle').textContent='Agregar producto';renderSizeOptions('')}
