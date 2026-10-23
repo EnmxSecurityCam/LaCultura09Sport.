@@ -76,13 +76,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 </head>
 <body>
 <div class="top">NOVEDADES · STREETWEAR · SPORT</div>
-<div class="masthead"><a class="brand" href="#" aria-label="MEJIA Sport inicio"><img src="mejiasport-logo.svg" alt="MEJIA La Cultura 09 Sport"></a></div>
+<div class="masthead"><a class="brand" href="#" aria-label="La Cultura 09 Sport, inicio"><img src="mejiasport-logo.svg" alt="MEJIA Sport — La Cultura 09 Sport"></a></div>
 <header class="nav">
 <div class="search"><input id="search" type="search" placeholder="Buscar tenis, camisas, hoodies, medias..." aria-label="Buscar productos"><span>⌕</span></div>
 <div class="actions"><button class="btn" id="accountButton" type="button" onclick="openAccount()">MI CUENTA</button><button class="btn primary" onclick="openCart()">CARRITO (<b id="count">0</b>)</button></div>
 </header>
 <main id="store">
-<section class="wrap"><div class="heading"><h2>Novedades</h2><small id="resultCount">12 productos</small></div>
+<section class="hero"><div><div class="category">LA CULTURA 09 SPORT</div><h1>Tu estilo.<br><span>Tu cultura.</span></h1><p>Descubre tenis y ropa urbana para llevar tu estilo a otro nivel.</p><a class="btn primary" href="#catalogo" style="display:inline-block;text-decoration:none;margin-top:12px;padding:13px 18px">EXPLORAR CATÁLOGO</a></div><div class="hero-mark" aria-hidden="true">LC09</div></section>
+<section class="wrap" id="catalogo"><div class="heading"><h2>Explora el catálogo</h2><small id="resultCount">Cargando productos…</small></div>
 <div class="filters" id="filters"><button class="filter active" data-cat="Todos">Todo</button></div>
 <div class="grid" id="products"></div></section>
 </main>
