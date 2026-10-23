@@ -105,3 +105,34 @@ drop policy if exists "Only LC09 admin reads orders" on public.orders;
 create policy "Only LC09 admin reads orders" on public.orders for select to authenticated using (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
 drop policy if exists "Only LC09 admin updates orders" on public.orders;
 create policy "Only LC09 admin updates orders" on public.orders for update to authenticated using (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid) with check (auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
+
+
+-- Comprobantes de transferencia: almacenamiento PRIVADO.
+alter table public.orders add column if not exists transfer_proof_path text null;
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('transfer-proofs', 'transfer-proofs', false, 5242880, array['image/jpeg','image/png','image/webp'])
+on conflict (id) do update set public = false, file_size_limit = 5242880, allowed_mime_types = array['image/jpeg','image/png','image/webp'];
+
+drop policy if exists "Public can upload transfer proofs" on storage.objects;
+create policy "Public can upload transfer proofs"
+on storage.objects for insert
+to anon, authenticated
+with check (
+  bucket_id = 'transfer-proofs'
+  and split_part(name, '/', 1) ~* '^[0-9a-f-]{36}$'
+  and lower(storage.extension(name)) in ('jpg','jpeg','png','webp')
+  and (metadata->>'mimetype') in ('image/jpeg','image/png','image/webp')
+  and coalesce((metadata->>'size')::bigint, 0) <= 5242880
+);
+
+drop policy if exists "Only LC09 admin reads transfer proofs" on storage.objects;
+create policy "Only LC09 admin reads transfer proofs"
+on storage.objects for select
+to authenticated
+using (bucket_id = 'transfer-proofs' and auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
+
+drop policy if exists "Only LC09 admin deletes transfer proofs" on storage.objects;
+create policy "Only LC09 admin deletes transfer proofs"
+on storage.objects for delete
+to authenticated
+using (bucket_id = 'transfer-proofs' and auth.uid() = '8f587962-3b19-4601-a00a-7edcec31ee1d'::uuid);
