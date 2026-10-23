@@ -92,6 +92,25 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 @media(max-width:800px){#overlay{padding:12px;align-items:flex-end;justify-content:center}#overlay>.drawer{width:100%;max-width:none;height:min(78dvh,760px);max-height:calc(100dvh - 100px);border-radius:20px;padding:16px;transform-origin:bottom center}.floating-cart{right:17px;bottom:calc(17px + env(safe-area-inset-bottom));width:60px;height:60px;font-size:25px}}
 @media(prefers-reduced-motion:reduce){.floating-cart,.floating-cart:before{animation:none}#overlay>.drawer{transition:none}}
 
+
+/* Nube independiente para acceso y registro */
+#accountOverlay{background:transparent;align-items:flex-end;justify-content:flex-end;padding:22px;pointer-events:none;z-index:32}
+#accountOverlay.open{display:flex}
+#accountOverlay>section.drawer{pointer-events:auto;width:min(520px,calc(100vw - 36px));max-width:520px;height:auto;max-height:calc(100dvh - 48px);overflow:auto;margin:0;border:1px solid #eee;border-radius:22px;padding:clamp(22px,3vw,32px);box-shadow:0 28px 90px #0004;transform:translateY(18px) scale(.97);transform-origin:bottom right;opacity:0;transition:transform .24s cubic-bezier(.2,.8,.2,1),opacity .2s}
+#accountOverlay.open>section.drawer{transform:translateY(0) scale(1);opacity:1}
+#accountOverlay .drawhead{position:static;margin:0 0 14px;padding:0 0 16px}
+#accountOverlay .drawhead h2{font-size:24px;letter-spacing:-.7px}
+#accountOverlay .drawhead .btn{border-radius:50%;width:36px;height:36px;padding:0;font-size:0;display:grid;place-items:center}
+#accountOverlay .drawhead .btn:after{content:"×";font-size:24px;font-weight:400}
+#accountOverlay #authMessage{font-size:12px;line-height:1.6;background:#f7f7f7;border-radius:10px;padding:12px}
+#accountOverlay .field{margin:16px 0}
+#accountOverlay .field label{font-size:11px;letter-spacing:.2px}
+#accountOverlay .field input{min-height:48px;border-radius:8px;font-size:15px}
+#accountOverlay #authSubmit{min-height:49px;border-radius:8px;letter-spacing:.5px}
+#accountOverlay #authToggle,#accountOverlay #forgotPassword{min-height:38px;border-radius:7px}
+@media(max-width:800px){#accountOverlay{padding:12px;align-items:flex-end;justify-content:center}#accountOverlay>section.drawer{width:100%;max-width:none;max-height:calc(100dvh - 30px);border-radius:22px;padding:22px;transform-origin:bottom center}#accountOverlay .drawhead h2{font-size:22px}}
+@media(prefers-reduced-motion:reduce){#accountOverlay>section.drawer{transition:none}}
+
 </style>
 </head>
 <body>
@@ -123,7 +142,7 @@ function saveCart(){try{localStorage.setItem(SAVED_CART_KEY,JSON.stringify(cart)
 function restoreCart(){try{const saved=JSON.parse(localStorage.getItem(SAVED_CART_KEY)||"{}");if(saved&&typeof saved==="object"&&!Array.isArray(saved))cart=Object.fromEntries(Object.entries(saved).filter(([key,q])=>typeof key==="string"&&Number.isInteger(q)&&q>0&&q<100))}catch(e){cart={}}}
 async function saveCloudCart(){if(!authUser)return;const {error}=await client.from("customer_carts").upsert({user_id:authUser.id,cart:cart,updated_at:new Date().toISOString()},{onConflict:"user_id"});if(error)console.error("No se pudo sincronizar el carrito",error.message)}
 async function loadCloudCart(){if(!authUser||cloudCartLoadedFor===authUser.id)return;const userId=authUser.id,local={...cart};const {data,error}=await client.from("customer_carts").select("cart").eq("user_id",userId).maybeSingle();if(error){console.error(error);say("No pudimos cargar el carrito guardado.");return}const cloud=data&&data.cart&&typeof data.cart==="object"?data.cart:{};const merged={...cloud};for(const [k,q] of Object.entries(local))if(Number.isInteger(q)&&q>0)merged[k]=Math.min(99,(Number(merged[k])||0)+q);cart=merged;cloudCartLoadedFor=userId;saveCart();renderCart();await saveCloudCart()}
-function openAccount(){if(authUser){openCart();$("accountOrders").scrollIntoView({behavior:"smooth",block:"start"});return}$("accountOverlay").classList.add("open")}
+function openAccount(){closeCart();if(authUser){openCart();$("accountOrders").scrollIntoView({behavior:"smooth",block:"start"});return}setAuthMode(authMode||"signup");$("accountOverlay").classList.add("open")}
 function closeAccount(){$("accountOverlay").classList.remove("open")}
 function setAuthMode(mode){authMode=mode;$("authTitle").textContent=mode==="signup"?"Crear cuenta":"Iniciar sesión";$("authSubmit").textContent=mode==="signup"?"CREAR CUENTA":"INICIAR SESIÓN";$("authNameWrap").style.display=mode==="signup"?"block":"none";$("authName").required=mode==="signup";$("authPassword").autocomplete=mode==="signup"?"new-password":"current-password";$("authToggle").textContent=mode==="signup"?"Ya tengo cuenta":"Crear cuenta nueva";$("authMessage").textContent=mode==="signup"?"Usa tu correo real: te enviaremos un mensaje para verificarlo.":"Entra para recuperar tu carrito y consultar tus pedidos."}
 $("authToggle").addEventListener("click",()=>setAuthMode(authMode==="signup"?"login":"signup"));
