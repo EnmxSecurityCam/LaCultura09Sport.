@@ -371,6 +371,53 @@ html,body{background:#050505!important;color:#f5f5f5}
 .floating-cart{border-radius:50%!important;width:60px!important;height:60px!important;background:#e9273d!important;color:#fff!important;box-shadow:0 8px 24px #0004!important;border:2px solid #fff!important;font-size:25px!important}
 @media(max-width:800px){#detailOverlay{padding:0;align-items:flex-end}#detailOverlay>.detail-drawer{height:94dvh;max-height:94dvh;width:100%;border-radius:18px 18px 0 0;padding:14px;padding-bottom:calc(18px + env(safe-area-inset-bottom))}#detailGallery .gallery-main{max-height:42vh;aspect-ratio:1/1}.related-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.related-card span{font-size:11px}.actions{margin-left:auto}.actions .btn{min-height:42px}#accountButton{font-size:10px}.floating-cart{right:16px!important;bottom:calc(16px + env(safe-area-inset-bottom))!important}}
 @media(prefers-reduced-motion:reduce){#detailOverlay>.detail-drawer{transition:none}}
+
+/* Rediseño limpio: ficha, cuenta y carrito */
+#detailOverlay{background:rgba(0,0,0,.72);backdrop-filter:blur(7px);padding:16px;align-items:center;justify-content:center}
+#detailOverlay>.detail-drawer{background:#101010!important;color:#f7f7f7!important;width:min(1050px,100%);height:min(92dvh,920px);max-height:calc(100dvh - 32px);border:1px solid #343434!important;border-radius:22px!important;box-shadow:0 28px 100px #0009!important;padding:clamp(14px,2.5vw,28px);overflow:auto}
+#detailOverlay .drawhead{position:sticky;top:-28px;background:#101010!important;color:#fff!important;border-bottom:1px solid #303030;padding:8px 0 16px;margin-bottom:16px;gap:14px}
+#detailOverlay .drawhead h2,#detailOverlay #detailTitle{color:#fff!important;font-size:clamp(21px,3.4vw,32px);font-weight:800;line-height:1.2;letter-spacing:-.7px;margin:0;min-width:0;overflow-wrap:anywhere}
+#detailOverlay .drawhead .btn{flex-shrink:0;background:#202020!important;color:#fff!important;border:1px solid #444!important;border-radius:999px!important;padding:11px 17px;font-size:12px}
+#detailOverlay .drawhead .btn:after{content:none!important}
+#detailOverlay #detailGallery .gallery-main{width:100%;max-height:56vh;aspect-ratio:1/1;object-fit:contain!important;background:#f2f2f2;border-radius:14px}
+#detailOverlay #detailGallery .gallery-thumbs{gap:10px;padding:12px 0}
+#detailOverlay #detailGallery .gallery-thumbs button{flex-basis:76px;height:76px;background:#f5f5f5;border:2px solid #292929;border-radius:10px}
+#detailOverlay #detailGallery .gallery-thumbs button.active{border-color:#e9273d}
+#detailOverlay #detailInfo{color:#f7f7f7}
+#detailOverlay #detailInfo .detail-title,#detailOverlay #detailInfo .price{color:#fff!important}
+#detailOverlay #detailInfo .detail-desc{color:#c5c5c5}
+#detailOverlay .related-products{border-top:1px solid #303030}
+#detailOverlay .related-products h3{color:#fff}
+#detailOverlay .related-card{background:#191919;color:#fff;border:1px solid #303030;border-radius:12px;transition:transform .18s,border-color .18s}
+#detailOverlay .related-card:hover{transform:translateY(-3px);border-color:#e9273d}
+#detailOverlay .related-card img{background:#f2f2f2}
+#overlay>.drawer,#accountOverlay>section.drawer{color:#f7f7f7!important;background:linear-gradient(160deg,#181818 0%,#101010 55%,#171014 100%)!important;border:1px solid #353535!important;border-radius:22px!important;box-shadow:0 24px 90px #0008,0 0 0 1px #ffffff05!important;isolation:auto!important}
+#overlay>.drawer:before,#accountOverlay>section.drawer:before,#overlay>.drawer:after,#accountOverlay>section.drawer:after{content:none!important;display:none!important}
+#overlay .drawhead,#accountOverlay .drawhead{background:transparent!important;color:#fff!important;border-bottom:1px solid #343434!important}
+#overlay .drawhead h2,#accountOverlay .drawhead h2{color:#fff!important;font-size:clamp(19px,3vw,24px);letter-spacing:-.5px}
+#overlay .drawhead .btn,#accountOverlay .drawhead .btn{background:#242424!important;color:#fff!important;border:1px solid #414141!important;border-radius:50%!important}
+#overlay .drawhead .btn:after,#accountOverlay .drawhead .btn:after{content:"×";color:#fff!important}
+#overlay .cartrow{border-bottom:1px solid #303030!important;color:#ddd!important}
+#overlay .cartrow h4,#overlay .cartrow b{color:#fff!important}
+#overlay .cartrow img{background:#f2f2f2!important;border:0!important;border-radius:9px!important}
+#overlay .qty button{background:#242424!important;color:#fff!important;border:1px solid #454545!important;border-radius:7px!important}
+#overlay .total{color:#fff!important;border-top:1px solid #303030!important}
+#overlay .cart-summary{background:#111!important;border-top:1px solid #303030!important}
+#overlay .hint,#accountOverlay #authMessage{background:#1b1b1b!important;border:1px solid #303030!important;color:#c9c9c9!important;border-radius:10px}
+#overlay .field label,#accountOverlay .field label{color:#e9e9e9!important}
+#overlay .field input,#overlay .field select,#overlay .order-tools input,#overlay .order-tools select,#overlay .order-tools textarea,#accountOverlay .field input{background:#171717!important;color:#fff!important;border:1px solid #3d3d3d!important;border-radius:9px!important}
+#overlay input::placeholder,#accountOverlay input::placeholder{color:#888!important}
+#overlay .btn,#accountOverlay .btn{background:#242424!important;color:#fff!important;border:1px solid #414141!important;border-radius:9px}
+#overlay .btn.primary,#accountOverlay .btn.primary,#accountOverlay #authSubmit,#overlay .checkout-submit{background:linear-gradient(120deg,#f12c45,#c91530)!important;border:1px solid #f12c45!important;color:#fff!important;box-shadow:0 7px 22px #e9273d24!important;border-radius:10px!important}
+#accountOverlay #authToggle,#accountOverlay #forgotPassword{background:#1b1b1b!important;color:#eee!important;border:1px solid #414141!important;border-radius:9px}
+#overlay .payment-note,#overlay .order-tools p,#overlay .order-tools small{color:#bcbcbc!important}
+#overlay .order-tools,#overlay .order-result{background:#1b1b1b!important;color:#eee!important;border:1px solid #333!important;border-radius:10px}
+.floating-cart{right:22px;bottom:22px;width:62px;height:62px;background:linear-gradient(145deg,#ff4058,#d81732)!important;border:1px solid #ff8290!important;border-radius:50%!important;box-shadow:0 10px 28px #e9273d42!important;animation:cartFloat 3.5s ease-in-out infinite}
+.floating-cart:before{content:none!important;display:none!important}
+@keyframes cartFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@media(max-width:800px){#detailOverlay{padding:0;align-items:flex-end}#detailOverlay>.detail-drawer{width:100%;height:94dvh;max-height:94dvh;border-radius:22px 22px 0 0!important;padding:14px 14px calc(18px + env(safe-area-inset-bottom))}#detailOverlay .drawhead{top:-14px;margin-top:-2px;padding:8px 0 14px}#detailOverlay .drawhead h2,#detailOverlay #detailTitle{font-size:clamp(19px,5.4vw,25px)}#detailOverlay .drawhead .btn{padding:10px 13px}#detailOverlay #detailGallery .gallery-main{max-height:43vh}#overlay,#accountOverlay{padding:12px;align-items:flex-end;justify-content:center}#overlay>.drawer,#accountOverlay>section.drawer{width:100%;max-width:none;height:auto;max-height:calc(100dvh - 28px);border-radius:22px!important;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}.floating-cart{right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:58px;height:58px}}
+@media(prefers-reduced-motion:reduce){.floating-cart{animation:none}#detailOverlay>.detail-drawer,#overlay>.drawer,#accountOverlay>section.drawer{transition:none!important}}
+
 </style>
 </head>
 <body>
