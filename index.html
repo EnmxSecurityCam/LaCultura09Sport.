@@ -345,6 +345,32 @@ html,body{background:#050505!important;color:#f5f5f5}
 #accountOverlay>section.drawer{transition:transform var(--cloud-slow) var(--cloud-ease),opacity var(--cloud-slow) var(--cloud-ease)!important;transform:translate3d(0,22px,0) scale(.985)!important}
 #accountOverlay.open>section.drawer{transform:translate3d(0,0,0) scale(1)!important}
 @media(prefers-reduced-motion:reduce){.overlay,.overlay>.drawer,.overlay>section.drawer,#accountOverlay>section.drawer{transition:none!important;animation:none!important}}
+
+/* Lanzamiento: detalle estilo marketplace, imágenes sin recorte y controles separados */
+.photo img,.cartrow img{object-fit:contain!important}
+.photo{background:#f4f4f4}
+#detailOverlay{background:#000b;align-items:center;justify-content:center;padding:14px;pointer-events:auto}
+#detailOverlay>.detail-drawer{width:min(1080px,100%);height:min(92dvh,920px);max-height:calc(100dvh - 28px);border-radius:16px;padding:clamp(14px,3vw,28px);overflow:auto;transform:translateY(12px) scale(.99);opacity:0;transition:transform .22s ease,opacity .2s}
+#detailOverlay.open>.detail-drawer{transform:translateY(0) scale(1);opacity:1}
+#detailOverlay .drawhead{position:sticky;top:-28px;background:#fff;padding:5px 0 14px;z-index:3}
+#detailGallery .gallery-main{aspect-ratio:1/1;max-height:48vh;object-fit:contain!important;background:#fff}
+#detailGallery .gallery-thumbs img{object-fit:contain!important;background:#fff}
+#detailInfo{display:grid;grid-template-columns:1fr;gap:5px}
+.detail-title{font-size:clamp(22px,3vw,32px);letter-spacing:-.7px}
+.related-products{margin-top:28px;border-top:1px solid #ddd;padding-top:20px}
+.related-products h3{font-size:20px;margin:0 0 14px}
+.related-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.related-card{border:1px solid #e7e7e7;border-radius:8px;overflow:hidden;background:#fff;cursor:pointer;color:#111;text-align:left;padding:0}
+.related-card img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:#f4f4f4}
+.related-card span{display:block;padding:9px;font-size:12px;line-height:1.35}
+.related-card b{display:block;padding:0 9px 10px;font-size:14px}
+.actions{align-items:center}
+#accountButton,#cartButton{min-height:42px}
+#cartButton{display:flex;align-items:center;gap:7px}
+#cartButton .cart-icon{font-size:18px;line-height:1}
+.floating-cart{border-radius:50%!important;width:60px!important;height:60px!important;background:#e9273d!important;color:#fff!important;box-shadow:0 8px 24px #0004!important;border:2px solid #fff!important;font-size:25px!important}
+@media(max-width:800px){#detailOverlay{padding:0;align-items:flex-end}#detailOverlay>.detail-drawer{height:94dvh;max-height:94dvh;width:100%;border-radius:18px 18px 0 0;padding:14px;padding-bottom:calc(18px + env(safe-area-inset-bottom))}#detailGallery .gallery-main{max-height:42vh;aspect-ratio:1/1}.related-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.related-card span{font-size:11px}.actions{margin-left:auto}.actions .btn{min-height:42px}#accountButton{font-size:10px}.floating-cart{right:16px!important;bottom:calc(16px + env(safe-area-inset-bottom))!important}}
+@media(prefers-reduced-motion:reduce){#detailOverlay>.detail-drawer{transition:none}}
 </style>
 </head>
 <body>
@@ -352,7 +378,7 @@ html,body{background:#050505!important;color:#f5f5f5}
 <div class="masthead"><a class="brand" href="#" aria-label="La Cultura 09 Sport, inicio"><img src="mejiasport-logo.svg" alt="MEJIA Sport — La Cultura 09 Sport"></a></div>
 <header class="nav">
 <div class="search"><input id="search" type="search" placeholder="Buscar tenis, camisas, hoodies, medias..." aria-label="Buscar productos"><span>⌕</span></div>
-<div class="actions"><button class="btn" id="accountButton" type="button" onclick="openAccount()">MI CUENTA</button><button class="btn primary" onclick="openCart()">CARRITO (<b id="count">0</b>)</button></div>
+<div class="actions"><button class="btn" id="accountButton" type="button" onclick="openAccount()">MI CUENTA</button><button class="btn primary" id="cartButton" onclick="openCart()" aria-label="Abrir carrito"><span class="cart-icon" aria-hidden="true">🛒</span><span>MI CARRITO</span> (<b id="count">0</b>)</button></div>
 </header>
 <main id="store">
 
@@ -376,7 +402,7 @@ function saveCart(){try{localStorage.setItem(SAVED_CART_KEY,JSON.stringify(cart)
 function restoreCart(){try{const saved=JSON.parse(localStorage.getItem(SAVED_CART_KEY)||"{}");if(saved&&typeof saved==="object"&&!Array.isArray(saved))cart=Object.fromEntries(Object.entries(saved).filter(([key,q])=>typeof key==="string"&&Number.isInteger(q)&&q>0&&q<100))}catch(e){cart={}}}
 async function saveCloudCart(){if(!authUser)return;const {error}=await client.from("customer_carts").upsert({user_id:authUser.id,cart:cart,updated_at:new Date().toISOString()},{onConflict:"user_id"});if(error)console.error("No se pudo sincronizar el carrito",error.message)}
 async function loadCloudCart(){if(!authUser||cloudCartLoadedFor===authUser.id)return;const userId=authUser.id,local={...cart};const {data,error}=await client.from("customer_carts").select("cart").eq("user_id",userId).maybeSingle();if(error){console.error("No se pudo leer customer_carts; se conserva el carrito local:",error.message);cloudCartLoadedFor=userId;renderCart();return}const cloud=data&&data.cart&&typeof data.cart==="object"&&!Array.isArray(data.cart)?data.cart:{};const merged={...cloud};for(const [k,q] of Object.entries(local)){if(Number.isInteger(q)&&q>0)merged[k]=Math.max(Number(merged[k])||0,q)}cart=merged;cloudCartLoadedFor=userId;renderCart();saveCart();await saveCloudCart()}
-function openAccount(){closeCart();if(authUser){openCart();$("accountOrders").scrollIntoView({behavior:"smooth",block:"start"});return}setAuthMode(authMode||"signup");$("accountOverlay").classList.add("open")}
+function openAccount(){closeCart();$("accountOverlay").classList.add("open");if(authUser){renderAccountSummary();loadCustomerOrders();return}setAuthMode(authMode||"signup")}
 function closeAccount(){$("accountOverlay").classList.remove("open")}
 function setAuthMode(mode){authMode=mode;$("authTitle").textContent=mode==="signup"?"Crear cuenta":"Iniciar sesión";$("authSubmit").textContent=mode==="signup"?"CREAR CUENTA":"INICIAR SESIÓN";$("authNameWrap").style.display=mode==="signup"?"block":"none";$("authName").required=mode==="signup";$("authPassword").autocomplete=mode==="signup"?"new-password":"current-password";$("authToggle").textContent=mode==="signup"?"Ya tengo cuenta":"Crear cuenta nueva";$("authMessage").textContent=mode==="signup"?"Usa tu correo real: te enviaremos un mensaje para verificarlo.":"Entra para recuperar tu carrito y consultar tus pedidos."}
 $("authToggle").addEventListener("click",()=>setAuthMode(authMode==="signup"?"login":"signup"));
@@ -400,7 +426,8 @@ async function loadProducts(){document.getElementById("products").innerHTML='<di
 document.getElementById("search").addEventListener("input",render);
 document.getElementById("filters").addEventListener("click",e=>{let b=e.target.closest("[data-cat]");if(!b)return;category=b.dataset.cat;document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));render()});
 let detailImageIndex=0,detailProductId=null,detailImgs=[],detailProduct=null;
-function openDetail(id){let p=items.find(x=>String(x.id)===String(id));if(!p)return;detailProductId=String(id);detailImageIndex=0;const imgs=(p.images.length?p.images:[p.img]).filter(Boolean);if(!imgs.length)imgs.push("");detailImgs=imgs;detailProduct=p;$("detailTitle").textContent=p.name;renderDetailGallery();$("detailInfo").innerHTML='<div class="category">'+esc(p.cat)+'</div><div class="detail-title">'+esc(p.name)+'</div><div class="price">'+money(p.price)+'</div><p class="detail-desc">'+esc(p.description||"Consulta los detalles de este modelo.")+'</p><p class="stock">'+(p.stock>0?'Disponible · '+p.stock+' unidades':'Agotado')+'</p><label class="size-label" for="detailSize">Selecciona la talla</label><select class="size-select" id="detailSize" '+(p.stock<=0?'disabled':'')+'>'+((p.size||"Única").split(",").map(s=>s.trim()).filter(Boolean).map(s=>'<option value="'+esc(s)+'">'+esc(s)+'</option>').join(""))+'</select><button class="add" style="font-size:12px;min-height:46px" '+(p.stock<=0?'disabled':'')+' onclick="addDetailToCart()">AÑADIR AL CARRITO</button>';document.getElementById("detailOverlay").classList.add("open")}
+function openDetail(id){let p=items.find(x=>String(x.id)===String(id));if(!p)return;detailProductId=String(id);detailImageIndex=0;const imgs=(p.images.length?p.images:[p.img]).filter(Boolean);if(!imgs.length)imgs.push("");detailImgs=imgs;detailProduct=p;$("detailTitle").textContent=p.name;renderDetailGallery();$("detailInfo").innerHTML='<div class="category">'+esc(p.cat)+'</div><div class="detail-title">'+esc(p.name)+'</div><div class="price">'+money(p.price)+'</div><p class="detail-desc">'+esc(p.description||"Consulta los detalles de este modelo.")+'</p><p class="stock">'+(p.stock>0?'Disponible · '+p.stock+' unidades':'Agotado')+'</p><label class="size-label" for="detailSize">Selecciona la talla</label><select class="size-select" id="detailSize" '+(p.stock<=0?'disabled':'')+'>'+((p.size||"Única").split(",").map(s=>s.trim()).filter(Boolean).map(s=>'<option value="'+esc(s)+'">'+esc(s)+'</option>').join(""))+'</select><button class="add" style="font-size:12px;min-height:46px" '+(p.stock<=0?'disabled':'')+' onclick="addDetailToCart()">AÑADIR AL CARRITO</button>';renderRelatedProducts(p);document.getElementById("detailOverlay").classList.add("open")}
+function renderRelatedProducts(p){const related=items.filter(x=>String(x.id)!==String(p.id)&&x.cat===p.cat).slice(0,4);const html=related.length?'<section class="related-products"><h3>Productos relacionados</h3><div class="related-grid">'+related.map(x=>'<button type="button" class="related-card" onclick="openDetail(\\\''+esc(x.id)+'\\\')">' +(x.images.length?'<img loading="lazy" src="'+esc(x.images[0])+'" alt="'+esc(x.name)+'">':(x.img?'<img loading="lazy" src="'+esc(x.img)+'" alt="'+esc(x.name)+'">':'<div style="aspect-ratio:1;background:#f4f4f4"></div>'))+'<span>'+esc(x.name)+'</span><b>'+money(x.price)+'</b></button>').join('')+'</div></section>':'<section class="related-products"><h3>Productos relacionados</h3><p class="detail-desc">Pronto habrá más modelos de esta categoría.</p></section>';document.getElementById("detailInfo").insertAdjacentHTML("beforeend",html)}
 function renderDetailGallery(){const imgs=detailImgs,p=detailProduct,main=imgs[detailImageIndex]||"";document.getElementById("detailGallery").innerHTML=(main?'<img class="gallery-main" src="'+esc(main)+'" alt="'+esc(p.name)+' foto '+(detailImageIndex+1)+'">':'<div class="empty">Sin fotos disponibles</div>')+(imgs.length>1?'<div class="gallery-thumbs">'+imgs.map((src,i)=>'<button class="'+(i===detailImageIndex?'active':'')+'" onclick="detailImageIndex='+i+';renderDetailGallery()"><img src="'+esc(src)+'" alt="Foto '+(i+1)+'"></button>').join("")+'</div>':'')}
 function closeDetail(){document.getElementById("detailOverlay").classList.remove("open")}
 function addDetailToCart(){if(!detailProductId)return;const sel=document.getElementById("detailSize");let size=sel?sel.value:"Única";add(detailProductId,size);closeDetail()}
