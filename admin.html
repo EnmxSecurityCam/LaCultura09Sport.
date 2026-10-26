@@ -81,6 +81,37 @@ h2{color:#f8fafc;font-size:19px}.muted,.product small,.stat small{color:#a5adba}
 }
 @media(max-width:370px){.adminStats{grid-template-columns:1fr 1fr}.stat strong{font-size:19px}.brand{font-size:11px}.panel{padding:12px}}
 
+
+/* Tema rojo/negro a juego con el catálogo de La Cultura Sport */
+:root{--red:#f00018;--ink:#f4f5f7;--muted:#a4aab3;--line:#252a31;--paper:#07090c;--soft:#101318}
+html{background:#07090c;color-scheme:dark}
+body{background:#07090c!important;color:#f4f5f7!important;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.top,.header,.masthead{background:#050607!important;color:#fff;border-color:#3a1116}
+.top{border-bottom:1px solid #390b10}
+.brand,h1,h2,h3,label,strong,.title{color:#f5f6f8}
+.wrap{color:#f4f5f7}
+.panel,.stat,.card,.product,.box,.section,.modal-content{background:linear-gradient(145deg,#101318,#090b0e)!important;color:#f4f5f7!important;border:1px solid #292e36!important;border-radius:11px;box-shadow:0 8px 24px #0005}
+p,small,.muted,.meta,.hint{color:#aeb4be}
+input,select,textarea{background:#0a0d11!important;color:#f5f6f8!important;border:1px solid #343a44!important;border-radius:7px!important}
+input::placeholder,textarea::placeholder{color:#777f8b}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#f00018!important;box-shadow:0 0 0 2px #f0001825}
+button,.btn{border:1px solid #343a44!important;background:#15191f!important;color:#f5f6f8!important;border-radius:7px!important;transition:background .18s,border-color .18s,transform .18s;min-height:40px}
+button:hover,.btn:hover{border-color:#f00018!important}
+button.primary,.btn.primary,button[type=submit],.primary,.danger,.btn-danger{background:#e60018!important;color:#fff!important;border-color:#f00018!important}
+button.primary:hover,.btn.primary:hover,button[type=submit]:hover,.danger:hover,.btn-danger:hover{background:#ff1b30!important}
+a{color:#ff3345}
+.adminStats{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat{background:linear-gradient(145deg,#171b21,#0d1014)!important}
+.stat strong{color:#fff}
+.stat small{color:#aeb4be}
+.status,.badge,.tag{border-radius:5px}
+#proofModal{background:#000d!important;backdrop-filter:blur(5px)}
+#proofModal .proof-card{background:#0c1015!important;color:#f4f5f7!important;border:1px solid #343a44!important}
+#proofModal .proof-head h2{color:#fff!important}
+#proofModal .proof-close{background:#e60018!important;color:#fff!important}
+hr{border:0;border-top:1px solid #292e36}
+@media(max-width:650px){.adminStats{grid-template-columns:repeat(1,minmax(0,1fr))}.stat{padding:13px}.panel{padding:13px!important}button,.btn{min-height:44px}input,select,textarea{font-size:16px!important;min-height:43px}}
+
 </style></head><body>
 <header class="top"><div class="brand">MEJIA <span>—</span> LA CULTURA 09 SPORT <small style="display:block;color:#bbb;font-size:10px;letter-spacing:1.5px;margin-top:5px">ADMINISTRACIÓN PRIVADA</small></div><button id="logout" class="btn hidden">Cerrar sesión</button></header>
 <main class="wrap">
