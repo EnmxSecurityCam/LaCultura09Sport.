@@ -17,6 +17,70 @@
 #proofModal img{display:block;max-width:100%;max-height:70vh;object-fit:contain}
 #proofModal .proof-note{font-size:12px;color:#666;margin:10px 0 0}
 
+
+/* Panel premium oscuro, inspirado en la referencia; responsive para móvil */
+:root{--red:#e8b923;--ink:#f5f6f8;--muted:#a5adba;--line:#202a35;--paper:#0a0f14;--soft:#070b10}
+html{background:#070b10;color-scheme:dark;scroll-behavior:smooth}
+body{background:radial-gradient(ellipse at 50% -20%,#17212b 0%,#080d12 58%);color:#f5f6f8;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
+.top{position:sticky;top:0;z-index:20;background:#080d12ed;border-bottom:1px solid #202a35;backdrop-filter:blur(14px);padding:15px max(14px,3vw);box-shadow:0 8px 24px #0003}
+.brand{letter-spacing:.4px;font-size:15px}.brand span{color:#f0c13b}
+.wrap{max-width:1400px;margin:22px auto;padding:0 18px}
+.panel{background:linear-gradient(145deg,#10171f,#0b1118);border:1px solid #202a35;border-radius:13px;padding:22px;margin-bottom:16px;box-shadow:0 8px 28px #0002}
+h1{color:#f8fafc;font-size:clamp(25px,3vw,36px);letter-spacing:-.8px}
+h2{color:#f8fafc;font-size:19px}.muted,.product small,.stat small{color:#a5adba}
+.field label{color:#cbd2dc}.field input,.field select,.field textarea{color:#f5f6f8;background:#0a1017;border:1px solid #2b3643;border-radius:8px;padding:13px}
+.field input::placeholder,.field textarea::placeholder{color:#687586}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid #d9ad2b;border-color:#d9ad2b}
+.btn{background:#141c25;color:#e9edf2;border:1px solid #2a3542;border-radius:8px;padding:11px 15px;min-height:42px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:#d9ad2b}.primary{background:linear-gradient(135deg,#f2ca54,#c99616);border-color:#d8ac2c;color:#101216}.danger{color:#ff727d}
+.status{background:#0c131b;border:1px solid #26313e;color:#d5dbe4;border-radius:8px}
+.product{background:#0c131b;border-color:#25303c;border-radius:9px;padding:12px;min-width:0}
+.product img,.photos-preview img{background:#17212b;border:1px solid #283340}
+.adminStats{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat{background:linear-gradient(145deg,#141d27,#0b1118);border:1px solid #26313e;border-radius:10px;padding:17px}
+.stat strong{color:#fff;font-size:26px}.stat small{font-size:12px}
+.size-option{background:#101720;border-color:#303b48;color:#e7ebf0;border-radius:8px;min-height:42px}
+.size-option:has(input:checked){background:#f0c13b;color:#12161b;border-color:#f0c13b}
+#proofModal{background:#000c;backdrop-filter:blur(8px)}
+#proofModal .proof-card{background:#0d141c;border:1px solid #283340;color:#f5f6f8}
+#proofModal .proof-head h2{color:#f5f6f8}#proofModal .proof-close{background:#e8b923;color:#111}
+#proofModal .proof-frame{background:#080d12;border-color:#26313e}
+@media(min-width:900px){.adminStats .stat{min-height:110px}.panel{padding:24px}}
+@media(max-width:650px){
+ .top{padding:12px 13px;gap:8px;align-items:center}
+ .brand{font-size:12px;letter-spacing:0;line-height:1.4;max-width:calc(100% - 110px)}
+ .brand small{font-size:9px!important;letter-spacing:1px!important}
+ #logout{font-size:11px;padding:9px 10px;min-height:40px}
+ .wrap{margin:12px auto;padding:0 10px}
+ .panel{padding:14px;margin-bottom:11px;border-radius:11px}
+ h1{font-size:25px;line-height:1.18;letter-spacing:-.6px}
+ h2{font-size:17px;margin-bottom:13px}
+ .adminStats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .stat{padding:12px;min-width:0}.stat strong{font-size:21px;overflow-wrap:anywhere}
+ .stat small{font-size:11px;line-height:1.4}
+ .grid{grid-template-columns:minmax(0,1fr);gap:12px}
+ .field.full{grid-column:auto}
+ .field input,.field select,.field textarea{font-size:16px;min-height:46px}
+ .field textarea{min-height:92px}
+ .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .actions .btn{width:100%;min-width:0;padding:10px 8px;font-size:12px}
+ .product{display:flex;flex-wrap:wrap;gap:10px;padding:11px}
+ .product img{width:58px;height:58px;flex-shrink:0}
+ .product .meta{flex:1 1 calc(100% - 80px);min-width:0;overflow-wrap:anywhere}
+ #ordersList .product,#requestsList .product{display:flex;flex-direction:column;align-items:stretch!important}
+ #ordersList .product>.meta,#requestsList .product>.meta,#ordersList .product>div:last-child,#requestsList .product>div:last-child{width:100%;min-width:0}
+ #ordersList .product select,#requestsList .product select,#requestsList .product textarea{width:100%;font-size:16px;min-height:45px}
+ #ordersList .product button,#requestsList .product button{min-height:44px}
+ #productList .product button{flex:1 1 120px}
+ #productList .product .meta{flex:1 1 calc(100% - 78px)}
+ .size-option{padding:9px 10px;min-height:44px}
+ .status{font-size:12px;line-height:1.5}
+ #proofModal{padding:8px}
+ #proofModal .proof-card{padding:12px;border-radius:12px;max-height:95dvh}
+ #proofModal .proof-frame{max-height:75dvh}
+}
+@media(max-width:370px){.adminStats{grid-template-columns:1fr 1fr}.stat strong{font-size:19px}.brand{font-size:11px}.panel{padding:12px}}
+
 </style></head><body>
 <header class="top"><div class="brand">MEJIA <span>—</span> LA CULTURA 09 SPORT <small style="display:block;color:#bbb;font-size:10px;letter-spacing:1.5px;margin-top:5px">ADMINISTRACIÓN PRIVADA</small></div><button id="logout" class="btn hidden">Cerrar sesión</button></header>
 <main class="wrap">
